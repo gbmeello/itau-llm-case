@@ -1,0 +1,85 @@
+spring:
+  application:
+    name: purchase-approval-agent
+  datasource:
+    url: jdbc:h2:mem:agent;DB_CLOSE_DELAY=-1
+    username: sa
+    password: ""
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+  jackson:
+    default-property-inclusion: always
+    serialization:
+      write-dates-as-timestamps: false
+
+server:
+  port: 8080
+
+# Fake por padrão: o avaliador roda tudo sem chave. Para o Claude real: LLM_PROVIDER=anthropic + ANTHROPIC_API_KEY.
+llm:
+  provider: ${LLM_PROVIDER:fake}
+  timeout-seconds: 60
+  max-attempts: 3
+  initial-backoff-ms: 500
+
+security:
+  api-key: ${AGENT_API_KEY:dev-key-change-me}
+
+agent:
+  analyst-model: claude-sonnet-5-5
+  reviewer-model: claude-haiku-4-5
+  analyst-effort: medium
+  analyst-max-tokens: 4000
+  min-approve-confidence: 0.7
+  max-repair-attempts: 1
+  max-case-rounds: 3
+  # Data de referência fixa para os dados sintéticos do ERP (deixe vazio para usar o relógio real)
+  fixed-date: ${AGENT_FIXED_DATE:2026-10-06}
+  context:
+    total-input: 8000
+    system-reserve: 1500
+    request: 1000
+    policy: 600
+    facts: 500
+    policy-text: 1200
+    history: 800
+    case-state: 300
+    examples: 600
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  metrics:
+    tags:
+      application: purchase-approval-agent
+
+logging:
+  structured:
+    format:
+      console: ecs
+  level:
+    com.itau.purchaseagent: INFO
+
+---
+spring:
+  config:
+    activate:
+      on-profile: postgres
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:5432/agent
+    username: ${DB_USER:agent}
+    password: ${DB_PASSWORD:agent}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+logging:
+  structured:
+    format:
+      console: ""
