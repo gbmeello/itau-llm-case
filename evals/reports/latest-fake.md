@@ -1,7 +1,7 @@
 # Relatório de eval: golden set
 
 - Provider: `fake`
-- Gerado em: 2026-10-06T12:06:54
+- Gerado em: 2026-10-06T12:11:36
 
 ## Resumo
 
@@ -14,11 +14,11 @@
 | groundingRate | 1.0000 |
 | criticalErrors | 0 |
 | adversarialPassRate | 1.0000 |
-| avgCostUsd | 0.0044 |
-| totalCostUsd | 0.1643 |
-| avgTokensIn | 1745.3243 |
+| avgCostUsd | 0.0045 |
+| totalCostUsd | 0.1654 |
+| avgTokensIn | 1753.1892 |
 | avgTokensOut | 102.9189 |
-| p95LatencyMs | 89 |
+| p95LatencyMs | 97 |
 | decisionDistribution | {APPROVE=10, ESCALATE_TO_HUMAN=16, NEEDS_INFO=7, REJECT=4} |
 
 ## Casos
