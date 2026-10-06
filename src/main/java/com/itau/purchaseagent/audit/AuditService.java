@@ -7,7 +7,6 @@ import com.itau.purchaseagent.contract.PurchaseDecision;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.time.Clock;
 import java.time.Instant;
 import java.util.HexFormat;
 import java.util.List;
@@ -21,12 +20,10 @@ public class AuditService {
 
     private final DecisionRecordRepository repo;
     private final ObjectMapper mapper;
-    private final Clock clock;
 
-    public AuditService(DecisionRecordRepository repo, ObjectMapper mapper, Clock clock) {
+    public AuditService(DecisionRecordRepository repo, ObjectMapper mapper) {
         this.repo = repo;
         this.mapper = mapper;
-        this.clock = clock;
     }
 
     @Transactional
@@ -39,7 +36,7 @@ public class AuditService {
                 truncate(String.join(",", outcome.context().excludedIds()), 1000),
                 outcome.context().estimatedTokens(), d.audit().tokens().input(), d.audit().tokens().output(),
                 d.audit().estimatedCostUsd(), d.audit().latencyMs(), json(outcome.request()), json(d),
-                Instant.now(clock)));
+                Instant.now()));
     }
 
     /** Idempotência/FinOps: mesma solicitação com o mesmo conteúdo não paga outra chamada ao LLM. */

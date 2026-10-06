@@ -35,7 +35,7 @@ agent:
   min-approve-confidence: 0.7
   max-repair-attempts: 1
   max-case-rounds: 3
-  # Data de referência fixa para os dados sintéticos do ERP (deixe vazio para usar o relógio real)
+  # "Hoje" das regras de negócio (dados sintéticos do ERP são de 2026). Timestamps de auditoria usam o relógio real.
   fixed-date: ${AGENT_FIXED_DATE:2026-10-06}
   context:
     total-input: 8000

@@ -19,7 +19,6 @@ import com.itau.purchaseagent.contract.SchemaValidator;
 import com.itau.purchaseagent.llm.LlmClient;
 import com.itau.purchaseagent.llm.LlmException;
 import com.itau.purchaseagent.registry.SkillRegistry;
-import java.time.Clock;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,11 +45,10 @@ public class EvaluationService {
     private final PromptRenderer renderer;
     private final LlmClient llm;
     private final AgentProperties props;
-    private final Clock clock;
 
     public EvaluationService(SchemaValidator schemas, ObjectMapper mapper, PurchaseApprovalAgent agent,
                              AuditService audit, CaseRepository cases, SkillRegistry skills, PromptRenderer renderer,
-                             LlmClient llm, AgentProperties props, Clock clock) {
+                             LlmClient llm, AgentProperties props) {
         this.schemas = schemas;
         this.mapper = mapper;
         this.canonical = mapper.copy().configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
@@ -61,7 +59,6 @@ public class EvaluationService {
         this.renderer = renderer;
         this.llm = llm;
         this.props = props;
-        this.clock = clock;
     }
 
     public Result evaluate(JsonNode body) {
@@ -79,7 +76,7 @@ public class EvaluationService {
             outcome = new AgentOutcome(decision, outcome.request(), outcome.context(), outcome.policy());
             cases.save(new CaseEntity(caseId, request.requestId(), body.toString(),
                     "Rodada 1: NEEDS_INFO. Pendências: " + String.join("; ", decision.missingInformation()),
-                    decision.audit().decisionId(), Instant.now(clock)));
+                    decision.audit().decisionId(), Instant.now()));
         }
         audit.record(outcome, hash);
         return new Result(decision, false);
@@ -121,7 +118,7 @@ public class EvaluationService {
         boolean close = decision.decision() != Decision.NEEDS_INFO;
         String newState = summary + " | Rodada " + (c.getRound() + 1) + ": " + decision.decision();
         c.advance(merged.toString(), newState.length() > 1900 ? newState.substring(newState.length() - 1900) : newState,
-                decision.audit().decisionId(), close, Instant.now(clock));
+                decision.audit().decisionId(), close, Instant.now());
         audit.record(outcome, AuditService.hash(canonicalJson(merged)));
         return new Result(decision, false);
     }

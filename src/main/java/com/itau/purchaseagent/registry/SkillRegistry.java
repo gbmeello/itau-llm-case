@@ -5,7 +5,6 @@ import com.itau.purchaseagent.registry.SkillVersionEntity.Type;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.time.Clock;
 import java.time.Instant;
 import java.util.HexFormat;
 import java.util.List;
@@ -42,11 +41,9 @@ public class SkillRegistry {
     private static final Logger log = LoggerFactory.getLogger(SkillRegistry.class);
 
     private final SkillVersionRepository repo;
-    private final Clock clock;
 
-    public SkillRegistry(SkillVersionRepository repo, Clock clock) {
+    public SkillRegistry(SkillVersionRepository repo) {
         this.repo = repo;
-        this.clock = clock;
     }
 
     public record ActiveSkill(String skillId, String version, String content) {
@@ -165,7 +162,7 @@ public class SkillRegistry {
     }
 
     private Instant now() {
-        return Instant.now(clock);
+        return Instant.now();
     }
 
     private static String maxVersion(List<SkillVersionEntity> versions) {
