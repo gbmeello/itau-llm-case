@@ -11,5 +11,5 @@
 - [x] **T9 Evals**: golden set (≥25), runner, critérios, relatório, baseline. Aceite: `mvn verify -Peval-fake` ok.
 - [x] **T10 Observabilidade**: métricas, logs estruturados, traceId. Aceite: métricas aparecem em `/actuator/prometheus`.
 - [x] **T11 Docs**: README, AGENT.md, architecture.md (Mermaid), ADRs, AI-USAGE.md, CHANGELOG-SKILLS.md, presentation.md.
-- [ ] **T12 Repo + CI**: GitHub Actions (build + test + eval-fake), push.
+- [x] **T12 Repo + CI**: https://github.com/gbmeello/itau-llm-case (público); GitHub Actions verde (test + eval-fake).
 - [ ] **T13 (stretch) MCP**: não implementado no prazo; ADR-0006 documenta o design e os trade-offs; `ErpGateway` é o ponto de troca.
