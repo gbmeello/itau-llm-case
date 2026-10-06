@@ -109,7 +109,8 @@ Exemplo de resposta (resumida, LLM fake):
                 "evidenceIds": ["EV-BUD", "EV-SUP", "EV-HIST-STATS"] }],
   "erpPayload": { "action": "AUTO_APPROVE", "approvalLevel": 0, "costCenter": "CC-4410" },
   "audit": { "decidedBy": "AGENT", "skillVersions": { "purchase-policies": "1.0.0", "analyst-examples": "1.0.0", "analyst": "1.1.0" },
-             "llmCalls": 1, "estimatedCostUsd": 0.0045 }
+             "model": "fake:claude-sonnet-5-5", "llmCalls": 1,
+             "tokens": { "input": 1456, "output": 99, "cacheRead": 1386 }, "estimatedCostUsd": 0.004179 }
 }
 ```
 

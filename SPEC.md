@@ -1,7 +1,18 @@
 # Spec: Agente de Aprovação de Solicitações de Compra (Purchase Approval Agent)
 
 > Case técnico Itaú: Engenharia de Prompt, Contexto e Agentes (LLM Engineering). Cenário base: **03, Aprovação de solicitações de compra**.
-> Status: **RASCUNHO, aguardando aprovação** · Processo: `agent-skills` (spec → plan → build → test → review → ship)
+> Status: **APROVADA em 2026-10-06** · Processo: `agent-skills` (spec → plan → build → test → review → ship)
+>
+> **Desvios registrados durante a implementação** (com motivo):
+> 1. Saída via **structured outputs** (`output_config.format`) e não via tool use forçado: o Sonnet 5.5 rejeita `tool_choice` `any`/`tool` e `temperature` não-default (§6). Ver ADR-0002.
+> 2. ID do Haiku: `claude-haiku-4-5` (sem sufixo de data).
+> 3. O **LLM gera só o julgamento** (`llm-assessment.v1`); o código monta o restante do contrato (§4.2).
+> 4. Os fatos do ERP são buscados **antes** do motor de regras (as regras de orçamento e fornecedor dependem deles); o diagrama da §3 foi simplificado.
+> 5. Histórico sumarizado **em código** (estatísticas + top-5), não pelo Haiku: determinístico e sem custo. O Haiku fica com a sumarização do caso multi-turno.
+> 6. Tool calling do analista (§5.3) **não implementado**: o contexto é pré-buscado (ADR-0003).
+> 7. MCP (§9) **não implementado** no prazo de 1 dia; a interface `ErpGateway` está pronta (ADR-0006).
+> 8. Projeto em módulo único na raiz (sem `app/` e `erp-mock-mcp/`), já que o MCP ficou fora.
+> 9. Traces via `traceId` (header/MDC/auditoria); OpenTelemetry fica como evolução.
 
 ---
 
