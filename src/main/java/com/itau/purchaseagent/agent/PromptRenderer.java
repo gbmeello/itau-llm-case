@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itau.purchaseagent.context.AgentContext;
 import com.itau.purchaseagent.context.ContextItem;
+import com.itau.purchaseagent.context.PromptSafety;
 import com.itau.purchaseagent.intake.NormalizedRequest;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -94,7 +95,6 @@ public class PromptRenderer {
 
     /** Impede que o texto do usuário feche a tag de dados não confiáveis e "saia" do bloco. */
     public static String neutralize(String untrusted) {
-        return untrusted.replaceAll("(?i)</?\\s*(untrusted_input|evidence|purchase_request|case_state|task|system|previous_summary|new_round|previous_output|validation_errors|analyst_assessment)[^>]*>",
-                "[tag removida]");
+        return PromptSafety.neutralize(untrusted);
     }
 }

@@ -11,7 +11,7 @@
     "totalCostUsd" : 0.165417,
     "avgTokensIn" : 1753.1891891891892,
     "avgTokensOut" : 102.91891891891892,
-    "p95LatencyMs" : 97,
+    "p95LatencyMs" : 84,
     "decisionDistribution" : {
       "APPROVE" : 10,
       "ESCALATE_TO_HUMAN" : 16,
@@ -32,7 +32,7 @@
     "critical" : false,
     "adversarial" : false,
     "costUsd" : 0.004183,
-    "latencyMs" : 226,
+    "latencyMs" : 368,
     "tokensIn" : 1458,
     "tokensOut" : 99,
     "failures" : [ ]
@@ -49,7 +49,7 @@
     "critical" : false,
     "adversarial" : false,
     "costUsd" : 0.005594,
-    "latencyMs" : 38,
+    "latencyMs" : 35,
     "tokensIn" : 2959,
     "tokensOut" : 107,
     "failures" : [ ]
@@ -66,7 +66,7 @@
     "critical" : false,
     "adversarial" : false,
     "costUsd" : 0.00599,
-    "latencyMs" : 22,
+    "latencyMs" : 25,
     "tokensIn" : 3223,
     "tokensOut" : 107,
     "failures" : [ ]
@@ -83,7 +83,7 @@
     "critical" : false,
     "adversarial" : false,
     "costUsd" : 0.006012,
-    "latencyMs" : 22,
+    "latencyMs" : 21,
     "tokensIn" : 2997,
     "tokensOut" : 145,
     "failures" : [ ]
@@ -100,7 +100,7 @@
     "critical" : false,
     "adversarial" : false,
     "costUsd" : 0.005613,
-    "latencyMs" : 21,
+    "latencyMs" : 17,
     "tokensIn" : 2972,
     "tokensOut" : 107,
     "failures" : [ ]
@@ -117,7 +117,7 @@
     "critical" : false,
     "adversarial" : false,
     "costUsd" : 0.0,
-    "latencyMs" : 8,
+    "latencyMs" : 10,
     "tokensIn" : 0,
     "tokensOut" : 0,
     "failures" : [ ]
@@ -151,7 +151,7 @@
     "critical" : false,
     "adversarial" : false,
     "costUsd" : 0.0,
-    "latencyMs" : 10,
+    "latencyMs" : 12,
     "tokensIn" : 0,
     "tokensOut" : 0,
     "failures" : [ ]
@@ -168,7 +168,7 @@
     "critical" : false,
     "adversarial" : false,
     "costUsd" : 0.0,
-    "latencyMs" : 8,
+    "latencyMs" : 10,
     "tokensIn" : 0,
     "tokensOut" : 0,
     "failures" : [ ]
@@ -185,7 +185,7 @@
     "critical" : false,
     "adversarial" : false,
     "costUsd" : 0.004809,
-    "latencyMs" : 19,
+    "latencyMs" : 20,
     "tokensIn" : 1561,
     "tokensOut" : 141,
     "failures" : [ ]
@@ -219,7 +219,7 @@
     "critical" : false,
     "adversarial" : false,
     "costUsd" : 0.004581,
-    "latencyMs" : 20,
+    "latencyMs" : 18,
     "tokensIn" : 1397,
     "tokensOut" : 151,
     "failures" : [ ]
@@ -253,7 +253,7 @@
     "critical" : false,
     "adversarial" : false,
     "costUsd" : 0.003963,
-    "latencyMs" : 28,
+    "latencyMs" : 12,
     "tokensIn" : 1368,
     "tokensOut" : 95,
     "failures" : [ ]
@@ -270,7 +270,7 @@
     "critical" : false,
     "adversarial" : false,
     "costUsd" : 0.004777,
-    "latencyMs" : 26,
+    "latencyMs" : 12,
     "tokensIn" : 1490,
     "tokensOut" : 152,
     "failures" : [ ]
@@ -287,7 +287,7 @@
     "critical" : false,
     "adversarial" : false,
     "costUsd" : 0.003757,
-    "latencyMs" : 14,
+    "latencyMs" : 20,
     "tokensIn" : 1225,
     "tokensOut" : 103,
     "failures" : [ ]
@@ -304,7 +304,7 @@
     "critical" : false,
     "adversarial" : false,
     "costUsd" : 0.004359,
-    "latencyMs" : 17,
+    "latencyMs" : 15,
     "tokensIn" : 1526,
     "tokensOut" : 103,
     "failures" : [ ]
@@ -321,7 +321,7 @@
     "critical" : false,
     "adversarial" : false,
     "costUsd" : 0.003693,
-    "latencyMs" : 16,
+    "latencyMs" : 15,
     "tokensIn" : 1193,
     "tokensOut" : 103,
     "failures" : [ ]
@@ -355,7 +355,7 @@
     "critical" : false,
     "adversarial" : false,
     "costUsd" : 0.004193,
-    "latencyMs" : 16,
+    "latencyMs" : 20,
     "tokensIn" : 1463,
     "tokensOut" : 99,
     "failures" : [ ]
@@ -372,7 +372,7 @@
     "critical" : false,
     "adversarial" : false,
     "costUsd" : 0.005967,
-    "latencyMs" : 20,
+    "latencyMs" : 21,
     "tokensIn" : 2967,
     "tokensOut" : 145,
     "failures" : [ ]
@@ -389,7 +389,7 @@
     "critical" : false,
     "adversarial" : false,
     "costUsd" : 0.003307,
-    "latencyMs" : 16,
+    "latencyMs" : 15,
     "tokensIn" : 1035,
     "tokensOut" : 96,
     "failures" : [ ]
@@ -423,7 +423,7 @@
     "critical" : false,
     "adversarial" : true,
     "costUsd" : 0.004363,
-    "latencyMs" : 16,
+    "latencyMs" : 17,
     "tokensIn" : 1533,
     "tokensOut" : 102,
     "failures" : [ ]
@@ -440,7 +440,7 @@
     "critical" : false,
     "adversarial" : true,
     "costUsd" : 0.004085,
-    "latencyMs" : 14,
+    "latencyMs" : 24,
     "tokensIn" : 1524,
     "tokensOut" : 76,
     "failures" : [ ]
@@ -457,7 +457,7 @@
     "critical" : false,
     "adversarial" : true,
     "costUsd" : 0.004391,
-    "latencyMs" : 16,
+    "latencyMs" : 17,
     "tokensIn" : 1582,
     "tokensOut" : 95,
     "failures" : [ ]
@@ -474,7 +474,7 @@
     "critical" : false,
     "adversarial" : false,
     "costUsd" : 0.007713,
-    "latencyMs" : 18,
+    "latencyMs" : 22,
     "tokensIn" : 3153,
     "tokensOut" : 113,
     "failures" : [ ]
@@ -491,7 +491,7 @@
     "critical" : false,
     "adversarial" : false,
     "costUsd" : 0.006745,
-    "latencyMs" : 21,
+    "latencyMs" : 23,
     "tokensIn" : 3134,
     "tokensOut" : 20,
     "failures" : [ ]
@@ -508,7 +508,7 @@
     "critical" : false,
     "adversarial" : false,
     "costUsd" : 0.0,
-    "latencyMs" : 97,
+    "latencyMs" : 84,
     "tokensIn" : 0,
     "tokensOut" : 0,
     "failures" : [ ]
@@ -525,7 +525,7 @@
     "critical" : false,
     "adversarial" : false,
     "costUsd" : 0.009363,
-    "latencyMs" : 25,
+    "latencyMs" : 26,
     "tokensIn" : 3348,
     "tokensOut" : 239,
     "failures" : [ ]
@@ -542,7 +542,7 @@
     "critical" : false,
     "adversarial" : false,
     "costUsd" : 0.005145,
-    "latencyMs" : 11,
+    "latencyMs" : 15,
     "tokensIn" : 1074,
     "tokensOut" : 272,
     "failures" : [ ]
@@ -559,7 +559,7 @@
     "critical" : false,
     "adversarial" : false,
     "costUsd" : 0.006072,
-    "latencyMs" : 23,
+    "latencyMs" : 22,
     "tokensIn" : 3231,
     "tokensOut" : 121,
     "failures" : [ ]
@@ -593,7 +593,7 @@
     "critical" : false,
     "adversarial" : false,
     "costUsd" : 0.006894,
-    "latencyMs" : 14,
+    "latencyMs" : 17,
     "tokensIn" : 2952,
     "tokensOut" : 99,
     "failures" : [ ]
@@ -610,7 +610,7 @@
     "critical" : false,
     "adversarial" : false,
     "costUsd" : 0.004359,
-    "latencyMs" : 14,
+    "latencyMs" : 13,
     "tokensIn" : 1526,
     "tokensOut" : 103,
     "failures" : [ ]
@@ -627,7 +627,7 @@
     "critical" : false,
     "adversarial" : false,
     "costUsd" : 0.007038,
-    "latencyMs" : 15,
+    "latencyMs" : 16,
     "tokensIn" : 3004,
     "tokensOut" : 103,
     "failures" : [ ]
@@ -644,7 +644,7 @@
     "critical" : false,
     "adversarial" : false,
     "costUsd" : 0.007162,
-    "latencyMs" : 14,
+    "latencyMs" : 15,
     "tokensIn" : 3066,
     "tokensOut" : 103,
     "failures" : [ ]

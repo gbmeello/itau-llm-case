@@ -108,7 +108,7 @@ public class ContextBuilder {
 
     private ContextItem requestItem(NormalizedRequest r) {
         String items = r.items().stream()
-                .map(i -> "%s x%d @ %s (%s)".formatted(nz(i.description(), nz(i.sku(), "item")), i.quantity(),
+                .map(i -> "%s x%d @ %s (%s)".formatted(PromptSafety.neutralize(nz(i.description(), nz(i.sku(), "item"))), i.quantity(),
                         brl(i.unitPrice()), nz(i.category(), "sem categoria")))
                 .collect(Collectors.joining("; "));
         Map<String, Object> data = new LinkedHashMap<>();

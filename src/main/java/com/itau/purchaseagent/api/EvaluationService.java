@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 /** Caso de uso da API: valida contrato, aplica idempotência, chama o agente, audita e gerencia casos multi-turno. */
@@ -86,7 +85,6 @@ public class EvaluationService {
      * Nova rodada de um caso NEEDS_INFO. A resposta do solicitante complementa a justificativa (continua sendo dado
      * não confiável) e o estado do caso é re-sumarizado com teto fixo, então o contexto não cresce por rodada.
      */
-    @Transactional
     public Result continueCase(String caseId, String message, JsonNode updates) {
         CaseEntity c = cases.findById(caseId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Caso não encontrado"));
@@ -103,7 +101,10 @@ public class EvaluationService {
         merged.put("requestId", c.getRequestId());
         if (message != null && !message.isBlank()) {
             String prev = merged.path("justification").isTextual() ? merged.get("justification").asText() + "\n" : "";
-            merged.put("justification", prev + "[Complemento rodada " + (c.getRound() + 1) + "] " + message.strip());
+            String added = "[Complemento rodada " + (c.getRound() + 1) + "] " + message.strip();
+            // Mantém o texto dentro do limite do contrato (4.000): preserva o complemento mais recente.
+            int room = Math.max(0, 4000 - added.length());
+            merged.put("justification", (prev.length() > room ? prev.substring(prev.length() - room) : prev) + added);
         }
         PurchaseRequest request = parse(merged);
         String summary = summarize(c.getStateSummary(), message, updates);
@@ -119,6 +120,7 @@ public class EvaluationService {
         String newState = summary + " | Rodada " + (c.getRound() + 1) + ": " + decision.decision();
         c.advance(merged.toString(), newState.length() > 1900 ? newState.substring(newState.length() - 1900) : newState,
                 decision.audit().decisionId(), close, Instant.now());
+        cases.save(c); // sem @Transactional: a chamada ao LLM não segura conexão de banco
         audit.record(outcome, AuditService.hash(canonicalJson(merged)));
         return new Result(decision, false);
     }
