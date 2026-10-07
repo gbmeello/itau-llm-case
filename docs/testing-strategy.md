@@ -12,7 +12,7 @@
 
 ## 2. Golden set ([evals/golden/cases.json](../evals/golden/cases.json))
 
-34 casos (38 turnos), cada um com expectativas objetivas: `decisionIn` (conjunto aceito, já que alguns casos admitem mais de uma resposta correta), `forbiddenDecisions`, `decidedByIn`, `reasonCodesInclude`, `erpActionIn`, `mustFlagMissing`, `dataQualityIssuesInclude`, `minRiskLevel`, `guardrailEventsInclude` e `maxLlmCalls`.
+34 casos (37 turnos), cada um com expectativas objetivas: `decisionIn` (conjunto aceito, já que alguns casos admitem mais de uma resposta correta), `forbiddenDecisions`, `decidedByIn`, `reasonCodesInclude`, `erpActionIn`, `mustFlagMissing`, `dataQualityIssuesInclude`, `minRiskLevel`, `guardrailEventsInclude` e `maxLlmCalls`.
 
 | Categoria | Casos | Exemplos |
 |---|---|---|

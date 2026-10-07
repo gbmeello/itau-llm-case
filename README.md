@@ -92,7 +92,7 @@ flowchart LR
 | Verificação | Resultado |
 |---|---|
 | `./mvnw test` | 36 testes ✅ (unitários: intake, regras, contexto, validador, resiliência; integração: API, casos, skills, métricas) |
-| `./mvnw verify -Peval-fake` | 38 turnos / 34 casos: acurácia 100%, schema 100%, grounding 100%, 0 decisões proibidas, adversariais 100% ([relatório](evals/reports/latest-fake.md)) |
+| `./mvnw verify -Peval-fake` | 37 turnos / 34 casos: acurácia 100%, schema 100%, grounding 100%, 0 decisões proibidas, adversariais 100% ([relatório](evals/reports/latest-fake.md)) |
 | `./mvnw verify -Peval` (Claude real) | **Não executado até a entrega**: não havia chave de API disponível. O runner está pronto; ver [testing-strategy](docs/testing-strategy.md) |
 
 > O eval com o LLM fake prova que **o sistema em volta do modelo** funciona: contratos, grounding, guardrails, fallbacks, multi-turno e custos. Ele **não** mede a qualidade de julgamento do Claude. Essa medida vem do `-Peval`, e o primeiro passo depois de obter a chave é rodá-lo e salvar o baseline (`-Deval.updateBaseline=true`).
