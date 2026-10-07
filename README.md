@@ -6,6 +6,8 @@ Um serviço Java/Spring Boot que recebe solicitações de compra (inclusive inco
 
 > **Princípio central:** o LLM é um componente de julgamento dentro de um sistema determinístico, e não o dono da decisão. As regras rígidas rodam antes dele, um validador em código confere tudo o que ele diz, e qualquer falha termina em revisão humana (*fail-safe*).
 
+> **Existe também uma versão em Python** (FastAPI, mesma arquitetura, contratos, prompts e golden set, com o **servidor MCP implementado**): [gbmeello/itau-llm-case-python](https://github.com/gbmeello/itau-llm-case-python).
+
 ## Sumário
 
 | Documento | Conteúdo |
