@@ -13,7 +13,7 @@
 | Fase | O que a IA fez | O que foi decisão/validação humana |
 |---|---|---|
 | **1. Entendimento** | Extraiu o texto do PDF do case (via `pdftotext`) e mapeou cada requisito para um item da solução | — |
-| **2. Decisões de alto nível** | Propôs as opções com trade-offs (cenário, stack, provedor de LLM, local do projeto) | **Humano escolheu:** cenário 03 (compras), **Java + Spring Boot** (a IA havia recomendado Python por maturidade do ecossistema de LLM; o humano optou por Java, _motivo: preencher_), Claude como LLM, repositório separado |
+| **2. Decisões de alto nível** | Propôs as opções com trade-offs (cenário, stack, provedor de LLM, local do projeto) | **Humano escolheu:** cenário 03 (compras), **Java + Spring Boot** (a IA havia recomendado Python pela maturidade do ecossistema de LLM; o humano optou por Java, a stack predominante de backend em bancos. Depois, a versão em Python também foi construída: [gbmeello/itau-llm-case-python](https://github.com/gbmeello/itau-llm-case-python)), Claude como LLM, repositório separado |
 | **3. Especificação** (`/spec`, skill `spec-driven-development`) | Escreveu o [SPEC.md](../SPEC.md): premissas explícitas, mapa de capacidades, contratos, budget de tokens, critérios de sucesso, perguntas em aberto | **Humano aprovou a spec** antes de qualquer código e respondeu às perguntas em aberto (prazo, repositório, chave de API) |
 | **4. Ambiente** | Instalou JDK 21 (winget), Maven 3.9.16 (download oficial com **checksum SHA-512 verificado**) e GitHub CLI | Autorizado pelo humano |
 | **5. Plano** (`planning-and-task-breakdown`) | [tasks/plan.md](../tasks/plan.md) e [tasks/todo.md](../tasks/todo.md) com tarefas, critérios de aceite e riscos | — |
@@ -35,6 +35,27 @@ A IA não acertou tudo de primeira. Itens detectados por compilação, testes ou
 | Timestamps de auditoria e de skills usando o "hoje" fixo das regras de negócio | Execução real do demo (todas as datas iguais a 12:00:00Z) | Relógio fixo só para regras; auditoria usa o horário real |
 | Payload com acentos corrompido no `curl` do Git Bash (Windows) | Execução do script de demo (400 MALFORMED_JSON) | Payloads montados em arquivo UTF-8 e enviados com `--data-binary` |
 | Prompt do analista v1.0.0 não proibia valores calculados, o que conflita com o validador de grounding | Revisão cruzada prompt × validador | `analyst@1.1.0` ([CHANGELOG-SKILLS.md](../CHANGELOG-SKILLS.md)) |
+
+
+## Rodada 3 (07/10): revisão de lacunas e fechamento
+
+A pedido do candidato ("existe algum ponto que está faltando?"), a IA comparou o entregue com o PDF do case e com a própria SPEC e listou 10 lacunas, com prioridade. O candidato pediu que todas fossem resolvidas (exceto reescrever o histórico git, que exige confirmação explícita).
+
+| Lacuna encontrada | O que foi feito | Onde |
+|---|---|---|
+| Spec prometia mascarar PII no texto livre; só o nome era descartado | Mascaramento de CPF, e-mail, telefone e cartão (Luhn) antes do LLM, inclusive nas mensagens de rodada de caso | Java e Python |
+| Spec prometia rate limit; não existia | Token bucket por API key nas rotas que consomem LLM (`429` + `Retry-After`, métrica) | Java e Python |
+| Spec citava docker compose; não havia Docker | Dockerfile (não-root) + compose (PostgreSQL + API + Prometheus; no Python também o servidor MCP), validado no CI de ponta a ponta | Java e Python |
+| Cliente Anthropic real nunca testado | Testes contra HTTP simulado: formato da requisição e mapeamento de erros/recusa, sem chave | Java e Python |
+| Alertas só descritos | `deploy/prometheus/alerts.yml` (9 regras com runbook), validado com `promtool` no CI | Java e Python |
+| Economia do prompt caching afirmada sem verificação | Documentação corrigida: depende do prefixo mínimo do modelo; como verificar e o que fazer se não cachear | Java e Python |
+| Tool calling com retry (diferencial do PDF) ausente | Tool calling opcional do analista: 3 ferramentas somente leitura, máx. 3 rodadas, `is_error`, evidências EV-T* com grounding, via MCP | Python |
+| Texto "_motivo: preencher_" público no AI-USAGE | Reescrito de forma neutra | Java |
+
+**Problemas que a verificação pegou nesta rodada:**
+- A regex de CPF não reconhecia um CPF seguido de ponto final ("…24725."), que acabava mascarado como telefone. O teste falhou e a regex foi corrigida nas duas versões.
+- *(Java)* `@Lob String` no Hibernate 6 + PostgreSQL vira `oid` (large object) e exige transação na leitura. O problema foi identificado antes de rodar em Postgres, e as colunas viraram texto longo portável.
+- A edição em lote de arquivos com CRLF não casava as expressões regulares; as alterações foram refeitas e conferidas uma a uma.
 
 ## Controles aplicados sobre o que a IA produziu
 

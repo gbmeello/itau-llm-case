@@ -7,7 +7,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import java.time.Instant;
@@ -39,8 +38,7 @@ public class SkillVersionEntity {
     @Column(nullable = false, length = 16)
     private Status status;
 
-    @Lob
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1_048_576) // texto longo portável (H2 e PostgreSQL), sem LOB/oid
     private String content;
 
     @Column(nullable = false, length = 64)

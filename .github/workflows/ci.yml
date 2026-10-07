@@ -46,3 +46,34 @@ jobs:
       - run: ./mvnw -B verify -Peval
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+  # Ambiente completo em containers: PostgreSQL + API + Prometheus.
+  docker-compose-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validar regras de alerta (promtool)
+        run: |
+          docker run --rm -v "$PWD/deploy/prometheus:/p" --entrypoint promtool prom/prometheus:v3.13.4 \
+            check rules /p/alerts.yml
+      - name: Subir o ambiente
+        run: docker compose up -d --build
+      - name: Aguardar a API
+        run: |
+          for i in $(seq 1 90); do curl -fs localhost:8080/actuator/health && exit 0; sleep 2; done
+          docker compose logs; exit 1
+      - name: Demo ponta a ponta (persistência em PostgreSQL)
+        run: |
+          ./scripts/demo.sh
+          test "$(grep -o '"decision":"APPROVE"' examples/responses/01-approve.json | head -1)" = '"decision":"APPROVE"'
+          test "$(grep -o '"decidedBy":"RULE_ENGINE"' examples/responses/04-blocked-supplier.json | head -1)" = '"decidedBy":"RULE_ENGINE"'
+      - name: Prometheus coletando métricas do agente
+        run: |
+          for i in $(seq 1 30); do
+            curl -fs 'localhost:9090/api/v1/query?query=agent_decisions_total' | grep -q '"result":\[{' && exit 0; sleep 3
+          done
+          exit 1
+      - name: Logs em caso de falha
+        if: failure()
+        run: docker compose logs

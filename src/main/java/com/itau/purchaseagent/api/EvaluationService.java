@@ -16,6 +16,7 @@ import com.itau.purchaseagent.contract.Enums.Decision;
 import com.itau.purchaseagent.contract.PurchaseDecision;
 import com.itau.purchaseagent.contract.PurchaseRequest;
 import com.itau.purchaseagent.contract.SchemaValidator;
+import com.itau.purchaseagent.intake.PiiMasker;
 import com.itau.purchaseagent.llm.LlmClient;
 import com.itau.purchaseagent.llm.LlmException;
 import com.itau.purchaseagent.registry.SkillRegistry;
@@ -94,6 +95,7 @@ public class EvaluationService {
         if (message != null && message.length() > 2000) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Mensagem acima de 2000 caracteres");
         }
+        message = PiiMasker.mask(message).text(); // a mensagem vai para o resumo (LLM) e para o caso persistido
         ObjectNode merged = (ObjectNode) readTree(c.getRequestJson());
         if (updates != null && updates.isObject()) {
             merge(merged, updates);

@@ -26,6 +26,7 @@ llm:
 
 security:
   api-key: ${AGENT_API_KEY:dev-key-change-me}
+  rate-limit-per-minute: ${RATE_LIMIT_PER_MINUTE:60}  # por cliente, nas rotas que consomem LLM (0 = desligado)
 
 agent:
   analyst-model: claude-sonnet-5-5

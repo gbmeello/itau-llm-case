@@ -3,7 +3,6 @@ package com.itau.purchaseagent.audit;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import java.time.Instant;
 
@@ -30,8 +29,7 @@ public class CaseEntity {
     @Column(length = 2000)
     private String stateSummary;
 
-    @Lob
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1_048_576) // texto longo portável (H2 e PostgreSQL), sem LOB/oid
     private String requestJson;
 
     @Column(length = 36)

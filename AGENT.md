@@ -40,6 +40,8 @@ Schema: [`src/main/resources/schemas/purchase-request.v1.json`](src/main/resourc
 | Categoria/urgência despadronizada | Normaliza (`it hardware` → `IT_HARDWARE`, `urgente` → `HIGH`) |
 | Texto com padrão de instrução | `SUSPICIOUS_INPUT` → regra `SEC-INPUT` bloqueia aprovação |
 | Nome do solicitante | **Descartado** no intake (minimização de PII): só IDs seguem no pipeline |
+| CPF, e-mail, telefone, cartão no texto livre | **Mascarados** (`PiiMasker`) antes do LLM e do contexto (`[CPF]`, `[EMAIL]`…); registra `PII_MASKED:<tipos>`. CNPJ é mantido (dado empresarial) |
+| Excesso de requisições | Rate limit por API key nas rotas que consomem LLM (default 60/min): `429` + `Retry-After` |
 
 ## 4. Contrato de saída: `purchase-decision.v1`
 

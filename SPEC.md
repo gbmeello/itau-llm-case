@@ -13,6 +13,7 @@
 > 7. MCP (§9) **não implementado** no prazo de 1 dia; a interface `ErpGateway` está pronta (ADR-0006).
 > 8. Projeto em módulo único na raiz (sem `app/` e `erp-mock-mcp/`), já que o MCP ficou fora.
 > 9. Traces via `traceId` (header/MDC/auditoria); OpenTelemetry fica como evolução.
+> 10. Lacunas da spec fechadas depois da revisão de 07/10: mascaramento de PII no texto livre (§12), rate limit por cliente (§12), Docker/compose com PostgreSQL + Prometheus e regras de alerta executáveis (§11). Tool calling (§5.3) e MCP (§9) foram implementados na versão Python ([itau-llm-case-python](https://github.com/gbmeello/itau-llm-case-python)).
 
 ---
 

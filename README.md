@@ -51,8 +51,17 @@ No Windows (PowerShell): `.\mvnw.cmd ...` e `$env:ANTHROPIC_API_KEY="..."`.
 | `LLM_PROVIDER` | `fake` | `fake` ou `anthropic` |
 | `ANTHROPIC_API_KEY` | — | Obrigatória com `anthropic` |
 | `AGENT_API_KEY` | `dev-key-change-me` | Header `X-API-Key` exigido em `/v1/**` |
+| `RATE_LIMIT_PER_MINUTE` | `60` | Limite por API key nas rotas que consomem LLM (`0` desliga) |
 | `AGENT_FIXED_DATE` | `2026-10-06` | "Hoje" das regras de negócio (os dados sintéticos são de 2026) |
 | `SPRING_PROFILES_ACTIVE` | — | `postgres` (persistência em PostgreSQL), `local` (logs em texto) |
+
+### Com Docker (ambiente completo)
+
+```bash
+docker compose up --build   # PostgreSQL + API + Prometheus com alertas
+```
+
+API em http://localhost:8080 e Prometheus em http://localhost:9090 (aba *Alerts*). O CI sobe esse mesmo ambiente e roda a demo de ponta a ponta.
 
 ## API
 
@@ -93,7 +102,7 @@ flowchart LR
 
 | Verificação | Resultado |
 |---|---|
-| `./mvnw test` | 36 testes ✅ (unitários: intake, regras, contexto, validador, resiliência; integração: API, casos, skills, métricas) |
+| `./mvnw test` | **48 testes ✅** (unitários: intake, PII, regras, contexto, validador, resiliência, rate limit, cliente Anthropic com HTTP simulado; integração: API, casos, skills, métricas) |
 | `./mvnw verify -Peval-fake` | 37 turnos / 34 casos: acurácia 100%, schema 100%, grounding 100%, 0 decisões proibidas, adversariais 100% ([relatório](evals/reports/latest-fake.md)) |
 | `./mvnw verify -Peval` (Claude real) | **Não executado até a entrega**: não havia chave de API disponível. O runner está pronto; ver [testing-strategy](docs/testing-strategy.md) |
 

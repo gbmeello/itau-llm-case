@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.TreeSet;
 import org.springframework.stereotype.Service;
 
 /**
@@ -35,8 +36,9 @@ public class IntakeService {
     public NormalizedRequest normalize(PurchaseRequest in) {
         List<String> issues = new ArrayList<>();
         List<String> missing = new ArrayList<>();
+        TreeSet<String> pii = new TreeSet<>();
 
-        List<NormalizedRequest.Item> items = normalizeItems(in.items(), issues, missing);
+        List<NormalizedRequest.Item> items = normalizeItems(in.items(), issues, missing, pii);
         BigDecimal computed = items.stream()
                 .map(i -> i.unitPrice().multiply(BigDecimal.valueOf(i.quantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add)
@@ -62,7 +64,7 @@ public class IntakeService {
             }
         }
 
-        String justification = trimToNull(in.justification());
+        String justification = masked(trimToNull(in.justification()), pii);
         if (justification == null) {
             issues.add("JUSTIFICATION_MISSING");
             missing.add("Justificativa de negócio da compra");
@@ -76,8 +78,11 @@ public class IntakeService {
             }
         }
 
+        if (!pii.isEmpty()) {
+            issues.add("PII_MASKED:" + String.join(",", pii));
+        }
         boolean suspicious = injectionDetector.isSuspicious(in.justification())
-                || items.stream().anyMatch(i -> injectionDetector.isSuspicious(i.description()));
+                || in.items().stream().anyMatch(i -> injectionDetector.isSuspicious(i.description()));
         if (suspicious) {
             issues.add("SUSPICIOUS_INPUT");
         }
@@ -104,7 +109,7 @@ public class IntakeService {
     }
 
     private List<NormalizedRequest.Item> normalizeItems(
-            List<PurchaseRequest.Item> raw, List<String> issues, List<String> missing) {
+            List<PurchaseRequest.Item> raw, List<String> issues, List<String> missing, TreeSet<String> pii) {
         List<NormalizedRequest.Item> items = new ArrayList<>();
         boolean priceMissing = false;
         for (PurchaseRequest.Item it : raw) {
@@ -125,7 +130,7 @@ public class IntakeService {
             } else {
                 category = category.toUpperCase(Locale.ROOT).replace(' ', '_');
             }
-            items.add(new NormalizedRequest.Item(trimToNull(it.sku()), trimToNull(it.description()), category, qty,
+            items.add(new NormalizedRequest.Item(trimToNull(it.sku()), masked(trimToNull(it.description()), pii), category, qty,
                     price.setScale(2, RoundingMode.HALF_UP)));
         }
         if (priceMissing) {
@@ -189,6 +194,13 @@ public class IntakeService {
             return "NORMAL";
         }
         return u;
+    }
+
+    /** Minimização (LGPD): PII em texto livre não chega ao LLM nem ao contexto. */
+    private static String masked(String text, TreeSet<String> found) {
+        PiiMasker.Result r = PiiMasker.mask(text);
+        found.addAll(r.kinds());
+        return r.text();
     }
 
     private static String digits(String s) {

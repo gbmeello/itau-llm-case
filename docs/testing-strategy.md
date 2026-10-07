@@ -4,8 +4,10 @@
 
 | Nível | O que cobre | Onde | Roda em |
 |---|---|---|---|
-| **Unitário** | Intake (normalização, CNPJ, PII, injeção), motor de regras (alçadas, bloqueio, orçamento, fracionamento, categoria, ERP fora), context builder (prioridade, teto por camada, corte de exemplos), validador (JSON, schema, IDs, valores R$, guardrails), resiliência (retry só em erro transitório, custo) | `src/test/java/**` | `./mvnw test` |
+| **Unitário** | Intake (normalização, CNPJ, PII, injeção), motor de regras (alçadas, bloqueio, orçamento, fracionamento, categoria, ERP fora), context builder (prioridade, teto por camada, corte de exemplos), validador (JSON, schema, IDs, valores R$, guardrails), resiliência (retry só em erro transitório, custo) , PII (CPF/e-mail/telefone/cartão), rate limit (token bucket)| `src/test/java/**` | `./mvnw test` |
 | **Integração** | API ponta a ponta com LLM fake: autenticação, contrato 400, aprovação com auditoria, idempotência, regra sem LLM, fallback por indisponibilidade, multi-turno, CRUD de skills com rastreabilidade, métricas | `ApiIntegrationTest` | `./mvnw test` |
+| **Cliente LLM real (sem chave)** | `AnthropicLlmClient` contra um servidor HTTP local: formato da requisição (structured outputs, `cache_control`, sem `temperature`), mapeamento de 429/529/5xx/400/401 e de `refusal` | `AnthropicLlmClientTest` | `./mvnw test` |
+| **Containers** | `docker compose up` (PostgreSQL + API + Prometheus), demo ponta a ponta e `promtool check rules` | CI (`docker-compose-smoke`) | GitHub Actions |
 | **Contrato** | Toda decisão é validada contra `purchase-decision.v1.json` em runtime **e** no eval; a entrada, contra `purchase-request.v1.json` | `SchemaValidator` | sempre |
 | **Eval: pipeline** | Golden set com LLM fake: guardrails, fallbacks e falhas injetadas (JSON inválido, alucinação, provedor fora, modelo que obedece à injeção, compliance discordando) | `GoldenSetEvalTest` | `./mvnw verify -Peval-fake` (CI) |
 | **Eval: modelo** | Mesmo golden set com o Claude real: qualidade de julgamento e aderência ao prompt | `GoldenSetEvalTest` | `./mvnw verify -Peval` (manual/nightly, custa tokens) |
